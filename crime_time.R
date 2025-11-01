@@ -187,3 +187,21 @@ z_statistic <- sqrt(test_result$statistic)
 cat(sprintf("Z-statistic: %.4f\n", z_statistic))
 cat(sprintf("P-value: %g\n\n", test_result$p.value))
 
+# Interpretation
+alpha <- 0.05
+if (test_result$p.value < alpha) {
+  cat(sprintf("Conclusion: The p-value (%.4f) is less than the significance
+              level (%.2f).\n", test_result$p.value, alpha))
+  cat("Therefore, we reject the null hypothesis.\n")
+  cat("This suggests the proportion of crimes occurring between 10:00 PM\n")
+  cat("and 2:00 AM is greater than 4/24 (0.167).\n")
+} else {
+  cat(sprintf("Conclusion: The p-value (%.4f) is not less than the
+              significance level (%.2f).\n", test_result$p.value, alpha))
+  cat("Therefore, we fail to reject the null hypothesis.\n")
+  cat("There is not enough evidence to conclude that the proportion of crimes\n")
+  cat("occurring between 10:00 PM and 2:00 AM is greater than 4/24 (0.167.\n")
+}
+
+# See the raw test result
+print(test_result)
