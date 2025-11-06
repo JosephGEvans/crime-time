@@ -10,7 +10,7 @@ df_raw <- get_crime_data()
 print(head(df_raw))
 
 # Check the types of crimes to see if they seem "violent"
-crimes <- df_raw[order(crimes$fbi_code, crimes$primary_type, crimes$description), ]
+crimes <- df_raw[order(df_raw$fbi_code, df_raw$primary_type, df_raw$description), ]
 print(crimes)
 # A word cloud visualization would help to summarize the descriptions
 
@@ -139,7 +139,7 @@ ggplot(hourly_crime_counts_clean, aes(x = hour, y = n)) +
 ####
 
 # Create a flag to indicate if a crime took place between 10PM and 2AM
-df_clean$crime_time <- ifelse(df_process$hour >= 22 | df_process$hour <= 2, 1, 0)
+df_clean$crime_time <- ifelse(df_clean$hour >= 22 | df_clean$hour <= 2, 1, 0)
 
 # Are there any missing values for the crime_time flag?
 print(sum(is.na(df_clean$crime_time)))
