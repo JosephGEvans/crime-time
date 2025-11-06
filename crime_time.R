@@ -235,5 +235,47 @@ if (test_result$p.value < alpha) {
   cat("occurring between 10:00 PM and 2:00 AM is greater than 4/24 (0.167.\n")
 }
 
-# See the raw test result
-print(test_result)
+# Optionally See the raw test result
+# print(test_result)
+
+
+#####
+# A proportional histogram can help visualize the result intuitively
+# It will be nice if the midnight hours are centered
+# It will also be helpful to see the "expected" 1/24 proportion as a line
+# Finally, it would be helpful to highlight the 4 hours of interest to the study
+#####
+
+# Calculate the proportion of crimes for each hour
+hourly_crime_proportions <- df_clean %>%
+  mutate(hour = hour(date_time)) %>%
+  count(hour) %>%
+  mutate(proportion = n / sum(n))
+
+# Set the order of the hours for the x-axis
+hour_order <- c(7:23, 0:6)
+hourly_crime_proportions$hour <- factor(hourly_crime_proportions$hour, 
+                                        levels = hour_order)
+
+# Create a column to identify the hours to highlight
+hourly_crime_proportions <- hourly_crime_proportions %>%
+  mutate(highlight = ifelse(hour %in% c(22, 23, 0, 1), 
+                            "highlight", 
+                            "normal"))
+
+# Generate the plot
+ggplot(hourly_crime_proportions, 
+       aes(x = hour, 
+           y = proportion, 
+           fill = highlight)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("highlight" = "orange", 
+                               "normal" = "steelblue"), 
+                    guide = "none") +
+  geom_hline(yintercept = 1/24, linetype = "dashed", 
+             color = "red", 
+             size = 1) +
+  labs(title = "Proportion of Crimes by Hour",
+       x = "Hour",
+       y = "Proportion of Crimes") +
+  theme_minimal() 
