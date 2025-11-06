@@ -1,10 +1,19 @@
 library(dplyr)
 library(lubridate)
 library(ggplot2)
+library(wordcloud)
+library(tm)
+
+# Set a random seed for reproducability
+set.seed(42)
 
 # Download the Crimes - 2001 to Present CSV if it doesn't already exist locally
 source("R/get_data.R")
 df_raw <- get_crime_data()
+
+#####
+# Exploratory Data Analysis
+#####
 
 # Take a look at the first few rows of the data set
 print(head(df_raw))
@@ -12,7 +21,31 @@ print(head(df_raw))
 # Check the types of crimes to see if they seem "violent"
 crimes <- df_raw[order(df_raw$fbi_code, df_raw$primary_type, df_raw$description), ]
 print(crimes)
+
+
 # A word cloud visualization would help to summarize the descriptions
+
+# First I need a corpus from the description column
+docs <- Corpus(VectorSource(crimes$description))
+
+# Next we create a term-document matrix from the corpus
+dtm <- TermDocumentMatrix(docs)
+m <- as.matrix(dtm)
+v <- sort(rowSums(m), decreasing = TRUE)
+d <- data.frame(word = names(v), freq = v)
+
+# Finally, generate the word cloud visualization
+par(bg = "black",
+    mar = c(0, 0, 0, 0))
+wordcloud(words = d$word, 
+          freq = d$freq,
+          min.freq = 5,
+          max.words = 55,
+          random.order = FALSE,
+          rot.per = 0.2,
+          colors = brewer.pal(12, "Set3"),
+          scale = c(8, 0.5)
+          )
 
 
 # Check the data type of the `date` column
@@ -109,13 +142,12 @@ cat("Excess count to be redistributed:", midnight_excess, "\n\n")
 #
 # 3. Randomly select 1863 midnight crimes to drop from the dataset
 # (Note: we could do other things like redistribute the excess crimes.)
-# 3a Set a random seed for reproducability
-set.seed(42)
-# 3b Get all the index values for midnight crimes
+# 
+# 3a Get all the index values for midnight crimes
 midnight_indices <- which(df_process$time_of_day == "00:00:00")
-# 3c Randomly sample 'midnight_excess' (1863) indices from midnight_indices
+# 3b Randomly sample 'midnight_excess' (1863) indices from midnight_indices
 crimes_to_drop <- sample(midnight_indices, size = midnight_excess)
-# 3d Create a new dataframe without those randomly-selected rows
+# 3c Create a new dataframe without those randomly-selected rows
 df_clean <- df_process %>%
   slice(-crimes_to_drop)
 
