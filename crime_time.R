@@ -75,6 +75,7 @@ df_process$hour <- as.numeric(format(df_process$date_time, "%H"))
 df_process <- df_process %>%
   mutate(time_of_day = format(date_time, "%H:%M:%S"))
 
+
 # Count the occurrences of each unique time, and sort to see the most common
 time_frequencies <- df_process %>%
   count(time_of_day, sort = TRUE)
