@@ -57,7 +57,7 @@ get_crime_data <- function() {
     
     # Save the csv to the data/ directory
     write.csv(df, file_path, row.names = FALSE)
-    message(paste("Data downloaded and saved to:", data_file_path))
+    message(paste("Data downloaded and saved to:", file_path))
   }
   
   return(df)
