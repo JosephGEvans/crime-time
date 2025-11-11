@@ -8,11 +8,11 @@ Exploring violent crime time of day occurrences for my WGU Data Analytics Capsto
 3. Open RStudio
 4. From the Console run `> install.packages("renv")`
 5. Create a new project from the crime-time git repository
-  a. File > New Project
-  b. Version Control
-  c. Git
-  d. Repository URL: https://github.com/JosephGEvans/crime-time.git
-  e. Create Project
+  1. File > New Project
+  2. Version Control
+  3. Git
+  4. Repository URL: https://github.com/JosephGEvans/crime-time.git
+  5. Create Project
 6. In the new project, from the Console run `> renv::restore()`
 
 ## Usage
