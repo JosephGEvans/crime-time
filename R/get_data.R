@@ -30,9 +30,11 @@ get_crime_data <- function() {
     
     message("Data not found in local data folder.  Downloading...")
     
-    app_token <- Sys.getenv("SOCRATA_APP_TOKEN")
+    source("R/easy_street.R")
+    app_token <- easy_street()
+    # app_token <- Sys.getenv("SOCRATA_APP_TOKEN")
     if (app_token == "") {
-      stop("SOCRATA_APP_TOKEN not in .Renviron file. An app token is required.")
+      stop("SOCRATA_APP_TOKEN not found. An app token is required.")
     }
     
     start_year <- 2015

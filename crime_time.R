@@ -4,7 +4,7 @@ library(ggplot2)
 library(wordcloud)
 library(tm)
 
-# Set a random seed for reproducability
+# Set a random seed for reproducibility
 set.seed(42)
 
 # Download the Crimes - 2001 to Present CSV if it doesn't already exist locally
