@@ -3,6 +3,7 @@ library(lubridate)
 library(ggplot2)
 library(wordcloud)
 library(tm)
+library(tidyverse)
 
 # Set a random seed for reproducibility
 set.seed(42)
